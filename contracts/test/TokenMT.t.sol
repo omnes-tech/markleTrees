@@ -9,9 +9,7 @@ import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 library LocalHashes {
     function commutativeKeccak256(bytes32 a, bytes32 b) internal pure returns (bytes32) {
         // Sort the pair
-        return a < b 
-            ? keccak256(abi.encode(a, b)) 
-            : keccak256(abi.encode(b, a));
+        return a < b ? keccak256(abi.encode(a, b)) : keccak256(abi.encode(b, a));
     }
 }
 
@@ -21,7 +19,7 @@ contract TokenMTTest is Test {
     // We'll make a little 4-leaf Merkle tree:
     // leaf0, leaf1, leaf2, leaf3 => we combine them in pairs => then combine again => root
     // We'll store one of the leaves/proofs for user=0x123, amount=100 ether
-    bytes32 public leafUser; 
+    bytes32 public leafUser;
     bytes32[] public validProofForUser;
     uint256 public constant userAmount = 100 ether;
     address public constant userAddr = address(0x123);
@@ -33,14 +31,14 @@ contract TokenMTTest is Test {
         /**
          * 1) Define 4 leaves:
          *    leaf0 = keccak256( (0x123), (100 ether) )
-         *    leaf1 = keccak256( arbitrary ) 
-         *    leaf2 = keccak256( arbitrary ) 
+         *    leaf1 = keccak256( arbitrary )
+         *    leaf2 = keccak256( arbitrary )
          *    leaf3 = keccak256( arbitrary )
          */
         leafUser = keccak256(abi.encodePacked(userAddr, userAmount));
-        bytes32 leaf1  = keccak256(abi.encodePacked(address(0xABC), uint256(200 ether)));
-        bytes32 leaf2  = keccak256(abi.encodePacked(address(0xDEF), uint256(300 ether)));
-        bytes32 leaf3  = keccak256(abi.encodePacked(address(0x999), uint256(400 ether)));
+        bytes32 leaf1 = keccak256(abi.encodePacked(address(0xABC), uint256(200 ether)));
+        bytes32 leaf2 = keccak256(abi.encodePacked(address(0xDEF), uint256(300 ether)));
+        bytes32 leaf3 = keccak256(abi.encodePacked(address(0x999), uint256(400 ether)));
 
         // 2) Pair them up in level 1:
         //    node0 = H( leafUser, leaf1 )
